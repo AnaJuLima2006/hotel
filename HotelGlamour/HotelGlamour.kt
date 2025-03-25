@@ -3,7 +3,7 @@ package HotelGlamour
 var nome : String = ""
 var hotel : String = ""
 
-fun main() {
+fun main(listaHospedes: MutableList<String>) {
 
     var senhaCorreta = 2678
     println("Qual é o seu nome?")
@@ -16,11 +16,11 @@ fun main() {
         println("\nDigite a sua senha:")
         senha = readln().toInt()
     }
-    iniciar()
+    iniciar(listaHospedes)
 
 }
 
-fun iniciar() {
+fun iniciar(listaHospedes: MutableList<String>) {
     hotel = "Hotel Glamour"
     println("Bem vindo ao $hotel, $nome! " +
             "É um enorme prazer ter você por aqui!\n")
@@ -32,11 +32,11 @@ fun iniciar() {
         4. Sair""")
     val escolha = readln().toIntOrNull()
     when (escolha) {
-        1 -> cadastrarQuartos()
+        1 -> cadastrarQuartos(listaHospedes)
         2 -> cadastrarHospedes()
         3 -> AbastecimentoDeAutomoveis()
-        4 -> sairDoHotel()
-        else -> erro()
+        4 -> sairDoHotel(listaHospedes)
+        else -> erro(listaHospedes)
     }
 }
 
@@ -45,17 +45,17 @@ fun AbastecimentoDeAutomoveis() {
 
 }
 
-fun sairDoHotel() {
+fun sairDoHotel(listaHospedes: MutableList<String>) {
     println("Você deseja sair?\n Informe 1 para \"sim\" e 0 para \"não\"")
     val confirma = readln().toBoolean() // digite true ou false ou 1 ou 0
     if (confirma) {
         println("Muito obrigado e até logo, $nome.")
     } else {
-        iniciar()
+        iniciar(listaHospedes)
     }
 }
 
-fun erro(){
+fun erro(listaHospedes: MutableList<String>){
     println("Por favor, informe um número entre 1 e 4.")
-    iniciar()
+    iniciar(listaHospedes)
 }
