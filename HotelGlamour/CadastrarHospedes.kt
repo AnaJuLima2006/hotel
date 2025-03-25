@@ -40,8 +40,7 @@ fun cadastrarNovoHospede(listaHospedes: MutableList<String>) {
     listaHospedes.add(novoHospede)
 
     println("$novoHospede cadastrada com sucesso!")
-    println("Lista de Hóspedes atuais " + listaHospedes)
-
+    println("Lista de Hóspedes atuais:\n" + listaHospedes.joinToString("\n")) //exibe os nomes em linhas separadas
     // Não é necessário chamar a função cadastrarHospedes(), pois o loop while já está chamando.
 }
 
@@ -51,7 +50,6 @@ fun pesquisarHospede(listaHospedes: MutableList<String>) {
 
     // Se o nome do hóspede estiver na lista, exibir o nome do hóspede.
     if (listaHospedes.any { it.contains(nomeHospede, ignoreCase = true) }) {
-
         println("\nEncontramos a(s) hóspede(s):")
         // filter irá filtrar a lista de hóspedes e exibir apenas os que contém o nome informado.
         listaHospedes.filter { it.contains(nomeHospede, ignoreCase = true) } // ignoreCase = true fará com que a busca não seja case sensitive.
