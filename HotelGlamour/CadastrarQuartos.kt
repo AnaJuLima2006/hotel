@@ -4,9 +4,7 @@ import kotlin.system.exitProcess
 
 val quartos = MutableList(20) { false }
 
-fun cadastrarQuartos(listaHospedes: MutableList<String>) {
-
-
+fun cadastrarQuartos() {
     while (true) {
         println("""Cadastro de Quartos
         Selecione uma opção:
@@ -16,81 +14,181 @@ fun cadastrarQuartos(listaHospedes: MutableList<String>) {
         val escolha = readln().toIntOrNull()
 
         when (escolha) {
-            1 -> cadastrarDiaria(listaHospedes)
+            1 -> cadastrarDiaria()
             2 -> sairCadastroDeQuartos()
-            else -> erroCadastroDeQaurtos()
-
+            else -> erroCadastroDeQuartos()
         }
     }
 }
+fun cadastrarDiaria() {
 
-fun cadastrarDiaria(listaHospedes: List<String>){
     while (true) {
-
         println("$nome, qual o valor da diária?")
-        val diaria = readln().toDoubleOrNull() ?: 0.0
-        println("$nome, qual a quantidade de dias?")
-        val dias = readln().toIntOrNull() ?: 0
+        var diaria: Double
+        while (true) {
+            val input = readln().trim()
+            if (input.isBlank()) {
+                println("Valor não pode ser vazio! Digite o valor da diária:")
+                continue
+            }
+            diaria = input.toDoubleOrNull() ?: 0.0
+            if (diaria <= 0) {
+                println("Valor inválido! Digite um número positivo:")
+                continue
+            }
+            break
+        }
 
-        if (diaria <= 0 || dias <= 0 || dias > 30) {
-            println("Valor Inválido!")
-            continue // Volta ao início
+        println("$nome, qual a quantidade de dias?")
+        var dias: Int
+        while (true) {
+            val input = readln().trim()
+            if (input.isBlank()) {
+                println("Valor não pode ser vazio! Digite a quantidade de dias:")
+                continue
+            }
+            dias = input.toIntOrNull() ?: 0
+            if (dias <= 0 || dias > 30) {
+                println("Valor inválido! Digite entre 1 e 30 dias:")
+                continue
+            }
+            break
         }
 
         val valor = diaria * dias
         println("O valor da diária é R$ $valor")
 
         println("Qual o nome do hóspede?")
-        val hospede = readln()
-        var quarto : Int
+        var hospede = readln().trim()
+        while (hospede.isBlank()) {
+            println("Nome não pode ser vazio! Digite o nome do hóspede:")
+            hospede = readln().trim()
+        }
+
+        // laço que veirfica se o hospede já foi cadastrado
+        while (true) {
+            if (listaHospedes.any { it.equals(hospede, ignoreCase = true) }) {
+                println("Hóspede encontrado na lista!")
+                break
+            } else {
+                println("""
+                Hóspede não encontrado na lista!
+                Deseja:
+                1. Digitar o nome novamente
+                2. Cadastrar novo hóspede
+                3. Voltar ao menu""")
+
+                when (readln().toIntOrNull()) {
+                    1 -> {
+                        println("Digite o nome do hóspede novamente:")
+                        hospede = readln()
+                    }
+                    2 -> {
+                        // Cadastra novo hóspede e mostra a lista completa
+                        println("Cadastro de novo hóspede:")
+                        var novoHospede: String
+                        while (true) {
+                            novoHospede = readln().trim()
+                            if (novoHospede.isBlank()) {
+                                println("Nome não pode ser vazio! Digite o nome do hóspede:")
+                                continue
+                            }
+                            break
+                        }
+                        listaHospedes.add(novoHospede)
+                        println("\nLista atualizada de hóspedes:")
+                        println("Lista de Hóspedes atuais:\n" + listaHospedes.joinToString("\n"))
+
+                        println("\nAgora digite o nome do hóspede para a reserva:")
+                        hospede = readln()
+                    }
+                    3 -> return
+                    else -> println("Opção inválida!")
+                }
+            }
+        }
+
+        // o usuario seleciona o quarto desejado
+        var quarto: Int
         while(true) {
             println("$nome, qual o quarto desejado (1 - 20)?")
-            quarto = readln().toIntOrNull() ?: 0
+            val input = readln().trim()
+            if (input.isBlank()) {
+                println("Valor não pode ser vazio! Digite o número do quarto:")
+                continue
+            }
+            quarto = input.toIntOrNull() ?: 0
 
             when {
                 quarto !in 1..20 -> println("Quarto inválido!")
-                quartos[quarto - 1] -> println("Quarto já está ocupado")
+                quartos[quarto - 1] -> {
+                    println("Quarto já está ocupado")
+                }
                 else -> {
-                    quartos[quarto - 1] = true // Reserva o quarto
+                    quartos[quarto - 1] = true
                     break
                 }
             }
         }
 
+        //o usuario decide se quer confirmar a reserva
         println("Confirma reserva para $hospede no quarto $quarto por $dias dias? (S/N)")
+        var resposta: String
+
+        while (true) {
+            resposta = readln().trim().uppercase()
+            if (resposta.isBlank()) {
+                println("Por favor, digite S ou N para confirmar:")
+                continue
+            }
+            if (resposta == "S" || resposta == "N") {
+                break
+            }
+            println("Opção inválida! Digite S ou N:")
+        }
+
         when (readln().uppercase()) {
             "S" -> {
                 println("Reserva confirmada!")
-                return // Sai da função após confirmação
+                print("\nStatus dos quartos: ")
+                quartos.forEachIndexed { index, ocupado ->
+                    val status = if (ocupado) "ocupado" else "livre"
+                    println("${index + 1} - $status")
+                    if (index != quartos.size - 1) {
+                        print("; ")
+                    }
+                }
+
+                println()
+                return
             }
-            else -> {
-                quartos[quarto - 1] = false // Libera o quarto
-                return // Volta ao menu principal
+            "N" -> {
+                quartos[quarto - 1] = false
+                println("Reserva cancelada. Quarto $quarto liberado.")
+                return
             }
         }
     }
 }
+
 fun sairCadastroDeQuartos() {
     println("Você deseja sair? S/N")
     val escolha = readln()
 
     when (escolha.uppercase()) {
-        // uppercase fará o que for digitado ser convertido para maiúsculo por exemplpo x -> X
         "S" -> {
             println("Hasta la vista, Baby.")
             exitProcess(0)
         }
-        "N" -> {
-            println("Ok, voltando ao início.")
-            cadastrarHospedes()
-        }
+        "N" -> iniciar()
         else -> {
             println("Desculpe, mas não compreendi.")
-            sairCadastroDeHospedes()
+            sairCadastroDeQuartos()
         }
     }
 }
 
-fun erroCadastroDeQaurtos() {
-    println("Por favor, informe um número entre 1 e 3.")
+fun erroCadastroDeQuartos() {
+    println("Por favor, informe um número entre 1 e 2.")
+    cadastrarQuartos()
 }
