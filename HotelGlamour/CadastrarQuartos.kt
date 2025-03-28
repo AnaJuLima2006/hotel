@@ -56,7 +56,7 @@ fun cadastrarDiaria() {
         }
 
         val valor = diaria * dias
-        println("O valor da diária é R$ $valor")
+        println("O valor da diária é R$ ${"%.2f".format(valor)}")
 
         println("Qual o nome do hóspede?")
         var hospede = readln().trim()
@@ -147,15 +147,22 @@ fun cadastrarDiaria() {
             println("Opção inválida! Digite S ou N:")
         }
 
-        when (readln().uppercase()) {
+        when (resposta) {
             "S" -> {
                 println("Reserva confirmada!")
                 print("\nStatus dos quartos: ")
                 quartos.forEachIndexed { index, ocupado ->
                     val status = if (ocupado) "ocupado" else "livre"
-                    println("${index + 1} - $status")
-                    if (index != quartos.size - 1) {
-                        print("; ")
+                    print("${index + 1} - $status")
+
+                    // Adiciona "; " se não for o último item E se não for o segundo de um par
+                    if (index != quartos.size - 1 && (index + 1) % 2 != 0) {
+                        print(", ")
+                    }
+
+                    // Quebra de linha após cada par
+                    if ((index + 1) % 2 == 0 || index == quartos.size - 1) {
+                        println()
                     }
                 }
 
