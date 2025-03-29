@@ -1,10 +1,15 @@
 package HotelGlamour
 
 var nome: String = ""
-var hotel: String = ""
+var hotel: String = "Hotel Glamour"
 val listaHospedes = mutableListOf<String>() // Acessível por todas funções
 
 fun main() {
+    if (!logar()) {
+        println("Suas chances acabaram, o program foi encerrado!")
+        return
+    }
+
     // Validação do nome
     while (true) {
         println("Qual é o seu nome?")
@@ -15,11 +20,37 @@ fun main() {
             break
         }
     }
+    iniciar()
+}
 
+fun iniciar() {
+    println("Bem vindo ao $hotel, $nome! É um enorme prazer ter você por aqui!\n")
+
+    println(
+        """Selecione uma opção:
+        1. Cadastrar Hospedes
+        2. Cadastrar Quartos
+        3. Cadastrar Familia de Hospedes
+        4. Reservar Eventos
+        5. Sair Do Hotel"""
+    )
+    val escolha = readln().toIntOrNull()
+    when (escolha) {
+        1 -> cadastroDeHospedes()
+        2 -> reservarQuartos()
+        3 -> cadastrarFamiliaHospedes()
+        4 -> reservarEventos()
+        5 -> sairDoHotel()
+        else -> erro()
+    }
+}
+
+fun logar(): Boolean {
+    var chances = 3
     val senhaCorreta = 2678
 
-    // Validação da senha
-    while (true) {
+    while (chances > 0) {
+        // Validação da senha
         println("Digite a sua senha:")
         val input = readln().trim()
 
@@ -36,37 +67,17 @@ fun main() {
         }
 
         if (senha == senhaCorreta) {
-            break  // Sai do loop quando a senha estiver correta
+            return true  // Sai do loop quando a senha estiver correta
         } else {
-            println("Senha incorreta, tente novamente!")
+            chances--
+            println("Senha incorreta, tente novamente, voce não tem mais $chances chances!")
         }
+
     }
-
-    iniciar()
+    return false
 }
 
-fun iniciar() {
-    hotel = "Hotel Glamour"
-    println("Bem vindo ao $hotel, $nome! É um enorme prazer ter você por aqui!\n")
 
-    println("""Selecione uma opção:
-        1. Cadastrar Hospedes
-        2. Cadastrar Quartos
-        3. Abastecimento de automóveis
-        4. Sair""")
-    val escolha = readln().toIntOrNull()
-    when (escolha) {
-        1 -> cadastrarHospedes()
-        2 -> cadastrarQuartos()
-        3 -> abastecimentoDeAutomoveis()
-        4 -> sairDoHotel()
-        else -> erro()
-    }
-}
-
-fun abastecimentoDeAutomoveis() {
-
-}
 
 fun sairDoHotel() {
     println("Você deseja sair?\n Informe 1 para \"sim\" e 0 para \"não\"")
@@ -79,6 +90,6 @@ fun sairDoHotel() {
 }
 
 fun erro() {
-    println("Por favor, informe um número entre 1 e 4.")
+    println("Por favor, informe um número entre 1 e 3.")
     iniciar()
 }
