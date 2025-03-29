@@ -4,7 +4,23 @@ import kotlin.system.exitProcess
 
 val quartos = MutableList(20) { false }
 
-fun cadastrarQuartos() {
+fun reservarQuartos() {
+    //caso a pessoa tente cadastrar um quarto, sem cadastrar um hospede primeiro
+    if (listaHospedes.isEmpty()) {
+        listaHospedes.addAll(listOf(
+            "Carlos Villagran",
+            "Maria Antonieta de las Nieves",
+            "Roberto Gómez Bolaños",
+            "Florinda Meza",
+            "Ramón Valdés",
+            "Rubén Aguirre",
+            "Angelines Fernández",
+            "Edgar Vivar",
+            "Horácio Gómez Bolaños",
+            "Raúl Padilla"
+        ))
+    }
+
     while (true) {
         println("""Cadastro de Quartos
         Selecione uma opção:
@@ -15,7 +31,7 @@ fun cadastrarQuartos() {
 
         when (escolha) {
             1 -> cadastrarDiaria()
-            2 -> sairCadastroDeQuartos()
+            2 -> sairReservaDeQuartos()
             else -> erroCadastroDeQuartos()
         }
     }
@@ -71,12 +87,11 @@ fun cadastrarDiaria() {
                 println("Hóspede encontrado na lista!")
                 break
             } else {
-                println("""
-                Hóspede não encontrado na lista!
-                Deseja:
-                1. Digitar o nome novamente
-                2. Cadastrar novo hóspede
-                3. Voltar ao menu""")
+                println("""Hóspede não encontrado na lista!
+                    Deseja:
+                    1. Digitar o nome novamente
+                    2. Cadastrar novo hóspede
+                    3. Voltar ao menu""")
 
                 when (readln().toIntOrNull()) {
                     1 -> {
@@ -178,7 +193,7 @@ fun cadastrarDiaria() {
     }
 }
 
-fun sairCadastroDeQuartos() {
+fun sairReservaDeQuartos() {
     println("Você deseja sair? S/N")
     val escolha = readln()
 
@@ -190,12 +205,12 @@ fun sairCadastroDeQuartos() {
         "N" -> iniciar()
         else -> {
             println("Desculpe, mas não compreendi.")
-            sairCadastroDeQuartos()
+            sairReservaDeQuartos()
         }
     }
 }
 
 fun erroCadastroDeQuartos() {
     println("Por favor, informe um número entre 1 e 2.")
-    cadastrarQuartos()
+    reservarQuartos()
 }
