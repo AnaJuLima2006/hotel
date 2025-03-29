@@ -2,7 +2,7 @@ package HotelGlamour
 
 import kotlin.system.exitProcess
 
-fun cadastrarHospedes() {
+fun cadastroDeHospedes() {
     // Inicializa a lista se estiver vazia
     if (listaHospedes.isEmpty()) {
         listaHospedes.addAll(listOf(
@@ -22,17 +22,18 @@ fun cadastrarHospedes() {
     while (true) {
         println("""Cadastro de Hóspedes
         Selecione uma opção:
-        1. Cadastrar
+        1. Cadastrar hospede
         2. Pesquisar
-        3. Sair""")
+        3. Cadastro familiar
+        4. Sair""")
 
         val escolha = readln().toIntOrNull()
 
         when (escolha) {
             1 -> cadastrarNovoHospede()
             2 -> pesquisarHospede()
-            3 -> sairCadastroDeHospedes()
-            else -> erroCadastroDeHospedes()
+            3-> sairCadastrarHospedes()
+            else -> erroCadastrarHospedes()
         }
     }
 }
@@ -62,11 +63,11 @@ fun pesquisarHospede() {
         listaHospedes.filter { it.contains(nomeHospede, ignoreCase = true) }
             .forEach { println(it) }
     } else {
-        println("Não encontramos nenhuma hóspede com esse nome.")
+        println("Não encontramos nenhum(a) hóspede com esse nome.")
     }
 }
 
-fun sairCadastroDeHospedes() {
+fun sairCadastrarHospedes() {
     println("Você deseja sair? S/N")
     val escolha = readln()
 
@@ -78,12 +79,12 @@ fun sairCadastroDeHospedes() {
         "N" -> iniciar()
         else -> {
             println("Desculpe, mas não compreendi.")
-            sairCadastroDeHospedes()
+            sairCadastrarHospedes()
         }
     }
 }
 
-fun erroCadastroDeHospedes() {
+fun erroCadastrarHospedes() {
     println("Por favor, informe um número entre 1 e 3.")
-    cadastrarHospedes()
+    cadastroDeHospedes()
 }
