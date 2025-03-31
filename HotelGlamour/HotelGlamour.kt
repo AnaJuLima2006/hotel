@@ -12,6 +12,7 @@ fun main() {
 
     // Validação do nome
     while (true) {
+
         println("Qual é o seu nome?")
         nome = readln().trim()
         if (nome.isBlank()) {
@@ -32,7 +33,9 @@ fun iniciar() {
         2. Cadastrar Quartos
         3. Cadastrar Familia de Hospedes
         4. Reservar Eventos
-        5. Sair Do Hotel"""
+        5. Abastecimento de imóveis
+        6. Manutenção de aparelhos
+        7. Sair Do Hotel"""
     )
     val escolha = readln().toIntOrNull()
     when (escolha) {
@@ -40,7 +43,9 @@ fun iniciar() {
         2 -> reservarQuartos()
         3 -> cadastrarFamiliaHospedes()
         4 -> reservarEventos()
-        5 -> sairDoHotel()
+        5 -> abastecimentoDeImoveis()
+        6 -> arCondicionado()
+        7 -> sairDoHotel()
         else -> erro()
     }
 }
@@ -70,14 +75,12 @@ fun logar(): Boolean {
             return true  // Sai do loop quando a senha estiver correta
         } else {
             chances--
-            println("Senha incorreta, tente novamente, voce não tem mais $chances chances!")
+            println("Senha incorreta, tente novamente, voce tem mais $chances chances!")
         }
 
     }
     return false
 }
-
-
 
 fun sairDoHotel() {
     println("Você deseja sair?\n Informe 1 para \"sim\" e 0 para \"não\"")
@@ -90,6 +93,6 @@ fun sairDoHotel() {
 }
 
 fun erro() {
-    println("Por favor, informe um número entre 1 e 3.")
+    println("Por favor, informe um número entre 1 e 7.")
     iniciar()
 }

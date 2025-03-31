@@ -86,7 +86,7 @@ fun dataEvento() {
     }
 
     println(
-        "Qual o horário?\n" +
+        "   Qual o horário?\n" +
         "   Segunda á sexta: 7h á 23h\n" +
         "   Sábado e Domingo: 7h ás 15h"
     )
@@ -142,16 +142,45 @@ fun funcionariosEvento(){
 
     val valorGarcomH = 10.50
 
-    println("Contratação de garçons")
+    println("\nContratação de garçons")
+
+
+    // solicita a qtde de convidados e verifica se é vazio ou se o número é válido
+    var convidados = 0
+    while (true) {
+        println("Quantos convidados estão confirmados para o evento?")
+        val input = readln().trim()
+
+        if (input.isBlank()) {
+            println("Você não digitou nada. Por favor, informe um número!")
+            continue
+        }
+
+        convidados = input.toIntOrNull() ?: 0
+        if (convidados > 0) break
+        println("Número inválido! Digite um valor maior que zero.")
+    }
+
+    // solicita a hora e verifica se é vazio ou se o número é válido
+    var horasEvento = 0
+    while (true) {
+        println("Qual a duração total do evento em horas?")
+        val input = readln().trim()
+
+        if (input.isBlank()) {
+            println("Você não digitou nada. Por favor, informe um número!")
+            continue
+        }
+
+        horasEvento = input.toIntOrNull() ?: 0
+        if (horasEvento > 0) break
+        println("Número inválido! Digite um valor maior que zero.")
+    }
 
     //calcula a qtde de garçons necessários para cada 12 convidados
-    println("Quantos convidados estão confirmados para o evento?")
-    val convidados = readln().toIntOrNull() ?: 0
     val garconsPorConvidados = kotlin.math.ceil(convidados / 12.0).toInt()
 
     //calcula a qtde de garçons adicionais
-    println("Qual a duração total do evento em horas?")
-    val horasEvento = readln().toIntOrNull() ?: 0
     val garconsPorHoras = kotlin.math.ceil(horasEvento / 2.0).toInt()
 
     //calcula  a qtde total de garçons
